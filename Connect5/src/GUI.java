@@ -17,6 +17,7 @@ public class GUI  extends JFrame{
     SpinnerNumberModel widthModel;
     SpinnerNumberModel lengthModel;
     SpinnerNumberModel playerCountModel;
+    SpinnerNumberModel aiCountModel;
 
     public static void main(String[] args){
         EventQueue.invokeLater(new Runnable(){
@@ -45,6 +46,7 @@ public class GUI  extends JFrame{
         JLabel widthLbl = new JLabel("Width of Board");
         JLabel lengthLbl = new JLabel("Length of Board");
         JLabel playerLbl = new JLabel("Number of PLayers");
+        JLabel aiLbl = new JLabel("Number of AIs, any more than players results in all AI players");
         settingsWindow.add(heightLbl);
         settingsWindow.add(height);
         settingsWindow.add(widthLbl);
@@ -52,9 +54,13 @@ public class GUI  extends JFrame{
         settingsWindow.add(lengthLbl);
         settingsWindow.add(length);
         playerCountModel = new SpinnerNumberModel( 2, 2, 5, 1);
+        aiCountModel = new SpinnerNumberModel(0,0,5,1);
         JSpinner playerCount = new JSpinner(playerCountModel);
+        JSpinner aiCount = new JSpinner(aiCountModel);
         settingsWindow.add(playerLbl);
         settingsWindow.add(playerCount);
+        settingsWindow.add(aiLbl);
+        settingsWindow.add(aiCount);
         JButton submit = new JButton("Select These Options");
         submit.addActionListener(new SubmitButton());
         settingsWindow.add(submit);
@@ -64,6 +70,8 @@ public class GUI  extends JFrame{
         @Override
         public void actionPerformed(ActionEvent arg0){
             board = new Connect5( (int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
+            dispose();
+            GameView boardGIU = new GameView();
         }
     }
 
@@ -73,6 +81,7 @@ public class GUI  extends JFrame{
         public GameView(){
             this.setBounds(100, 100, 450, 300);
             this.setContentPane(gameWindow);
+            setVisible(true);
         }
     }
 
