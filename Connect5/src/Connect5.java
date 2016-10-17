@@ -98,6 +98,18 @@ public class Connect5 {
 				}
 		return false;
 	}
+	private int currentPlayer = 1;
+
+	public int turnOrder() {
+		currentPlayer++;
+		if (currentPlayer > playerz.length)
+			currentPlayer = 1;
+		return currentPlayer;
+	}
+
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
 
 	public class Player {
 		int playerNumber;
@@ -110,6 +122,7 @@ public class Connect5 {
 			for (int[][] z : board)
 				if (z[column][row] == 0) {
 					z[column][row] = playerNumber;
+					turnOrder();
 					return checkWin(row, column);
 				}
 			throw new InvalidMoveException();

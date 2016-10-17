@@ -33,6 +33,7 @@ public class GUI  extends JFrame{
     }
 
     public GUI(){
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(100, 100, 450, 300);
         this.setContentPane(settingsWindow);
         settingsWindow.setLayout(new BoxLayout(settingsWindow, BoxLayout.PAGE_AXIS));
@@ -71,7 +72,7 @@ public class GUI  extends JFrame{
         public void actionPerformed(ActionEvent arg0){
             board = new Connect5( (int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
             dispose();
-            GameView boardGIU = new GameView();
+            GameView boardGUI = new GameView();
         }
     }
 
@@ -81,7 +82,9 @@ public class GUI  extends JFrame{
         SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
 
+
         public GameView(){
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setBounds(100, 100, 450, 300);
             this.setContentPane(gameWindow);
 
