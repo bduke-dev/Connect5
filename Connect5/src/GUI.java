@@ -76,11 +76,55 @@ public class GUI  extends JFrame{
     }
 
     private class GameView extends JFrame{
-        //the playign board
+        //the playin board
+        SpinnerNumberModel xCountModel;
+        SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
+
         public GameView(){
             this.setBounds(100, 100, 450, 300);
             this.setContentPane(gameWindow);
+
+            JButton startbtn = new JButton("Start");
+            JButton resetBtn = new JButton("Reset");
+            JPanel subPanel1 = new JPanel();
+            subPanel1.add(startbtn);
+            subPanel1.add(resetBtn);
+            gameWindow.add(subPanel1, BorderLayout.PAGE_START);
+
+            JPanel subPanel2 = new JPanel();
+            gameWindow.add(subPanel2, BorderLayout.CENTER);
+
+            xCountModel = new SpinnerNumberModel(0,0,(int) widthModel.getNumber(), 1);
+            yCountModel = new SpinnerNumberModel(0,0,(int) lengthModel.getNumber(), 1);
+            JSpinner xSpinner = new JSpinner(xCountModel);
+            JSpinner ySpinner = new JSpinner(yCountModel);
+            JLabel xlbl = new JLabel("x");
+            JLabel ylbl = new JLabel("y");
+            JPanel subPanel3 = new JPanel();
+            subPanel3.add(xlbl);
+            subPanel3.add(xSpinner);
+            subPanel3.add(ylbl);
+            subPanel3.add(ySpinner);
+
+            JButton commitBtn = new JButton("Commit Move");
+            Box subPanel4 = new Box(BoxLayout.PAGE_AXIS);
+            subPanel4.add(subPanel3);
+            subPanel4.add(commitBtn);
+            gameWindow.add(subPanel4, BorderLayout.EAST);
+
+            JLabel statusLbl = new JLabel("Temp");
+            gameWindow.add(statusLbl, BorderLayout.PAGE_END);
+
+            JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
+            gameWindow.add(background1, BorderLayout.WEST);
+
+
+
+
+
+
+
             setVisible(true);
         }
     }
