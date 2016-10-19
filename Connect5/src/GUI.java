@@ -122,6 +122,20 @@ public class GUI  extends JFrame{
             JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
             gameWindow.add(background1, BorderLayout.WEST);
 
+            JPanel subPanel5 = new JPanel();
+            @Override
+            public void paint(Graphics g){
+                super.paint(g); // Call it's parent for proper rendering.
+                for (int i = 0; i<(int) heightModel.getNumber(); i++)
+                    for (int j = 0; j<(int) heightModel.getNumber(); j++){
+                        for (int k = 0; k<(int) lengthModel.getNumber(); k++) {
+                            getGraphics().setColor(Color.black);
+                            //do something for every field in the array
+                            //i.e. g.setColor(Color.getColor(wallArray[i][j], 50, 50));
+                            //g.drawLine(i,j,i,j);
+                        }
+                    }
+            }
 
 
 
