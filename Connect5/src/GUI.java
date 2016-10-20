@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -90,6 +91,7 @@ public class GUI  extends JFrame {
 
             JButton startbtn = new JButton("Start");
             JButton resetBtn = new JButton("Reset");
+            resetBtn.addActionListener(new ResetButton());
             JPanel subPanel1 = new JPanel();
             subPanel1.add(startbtn);
             subPanel1.add(resetBtn);
@@ -123,8 +125,7 @@ public class GUI  extends JFrame {
             gameWindow.add(background1, BorderLayout.WEST);
 
             boardPanel.setBackground(Color.CYAN);
-            JScrollPane boardScroll = new JScrollPane(boardPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            gameWindow.add(boardScroll, BorderLayout.CENTER);
+            gameWindow.add(boardPanel, BorderLayout.CENTER);
 
 
             setVisible(true);
@@ -133,19 +134,51 @@ public class GUI  extends JFrame {
         private class BoardPanel extends JPanel{
             public void paintComponent(Graphics g){
                 super.paintComponent(g);
-                int xVal = 0,yVal = 872;
+                int z = (int) heightModel.getNumber();
+                int y = (int) widthModel.getNumber();
+                int x = (int) lengthModel.getNumber();
+                int xVal = 15*x-15;
+                int yVal = (15*y*z)+(15*(z-2));
+                int counter = 1;
                 g.setColor(Color.BLACK);
-                for (int i = 0; i < (int) heightModel.getNumber(); i++) {
-                    for (int j = 0; j < (int) widthModel.getNumber(); j++) {
-                        for (int k = 0; k < (int) lengthModel.getNumber(); k++) {
-                            g.drawRect(xVal, yVal, 8, 8);
-                            xVal = xVal + 8;
+
+                if (z>5) xVal = (15*x*2)+15; //we need 2 per row b/c too tall
+                for (int i = 0; i < z; i++) {
+                    for (int j = 0; j < y; j++) {
+                        for (int k = 0; k < x; k++) {
+                            g.drawRect(xVal, yVal, 15, 15);
+                            xVal = xVal - 15;
                         }
-                        yVal = yVal - 8;
-                        xVal = 0;
+                        yVal = yVal - 15;
+                        if (z<=5) xVal = 15*x-15;
+                        else {
+                            if (counter != 2) xVal = (15*x*2)+15;
+                            else xVal = (xVal + (15*x));
+                        }
                     }
-                    yVal = yVal - 8;
+                    if (z<=5) yVal = yVal - 15;
+                    else {
+                        if (counter != 2) {
+                            yVal = yVal + (15*y);
+                            xVal = (xVal - (15*x)) - 15;
+                        }
+                        else {
+                            xVal = (15*x*2)+15;
+                            yVal = yVal-15;
+                        }
+                    }
+                    counter++;
+                    if (counter > 2) counter = 1;
                 }
+            }
+        }
+
+        private class ResetButton implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                dispose();
+                GUI gui = new GUI();
+                gui.setVisible(true);
             }
         }
     }
