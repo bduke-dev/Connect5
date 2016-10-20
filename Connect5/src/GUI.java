@@ -86,7 +86,7 @@ public class GUI  extends JFrame {
 
         public GameView() {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setBounds(100, 100, 1700, 900);
+            this.setBounds(100, 100, 1700, 950);
             this.setContentPane(gameWindow);
 
             JButton startbtn = new JButton("Start");
@@ -142,7 +142,10 @@ public class GUI  extends JFrame {
                 int counter = 1;
                 g.setColor(Color.BLACK);
 
-                if (z>5) xVal = (15*x*2)+15; //we need 2 per row b/c too tall
+                if (z>5) {
+                    xVal = (15*x*2)+15; //we need 2 per row b/c too tall
+                    yVal = yVal/2;
+                }
                 for (int i = 0; i < z; i++) {
                     for (int j = 0; j < y; j++) {
                         for (int k = 0; k < x; k++) {
