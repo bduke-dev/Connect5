@@ -1,5 +1,3 @@
-import sun.util.locale.provider.AvailableLanguageTags;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,7 +7,7 @@ import java.awt.event.ActionListener;
  * Created by brandon on 10/14/16.
  */
 
-public class GUI  extends JFrame{
+public class GUI  extends JFrame {
     //settings window
     Connect5 board;
     JPanel settingsWindow = new JPanel();
@@ -19,27 +17,28 @@ public class GUI  extends JFrame{
     SpinnerNumberModel playerCountModel;
     SpinnerNumberModel aiCountModel;
 
-    public static void main(String[] args){
-        EventQueue.invokeLater(new Runnable(){
-            public void run(){
-                try{
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
                     GUI gui = new GUI();
                     gui.setVisible(true);
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
     }
 
-    public GUI(){
+    public GUI() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBounds(100, 100, 450, 300);
         this.setContentPane(settingsWindow);
         settingsWindow.setLayout(new BoxLayout(settingsWindow, BoxLayout.PAGE_AXIS));
-        heightModel = new SpinnerNumberModel( 3, 3, 10, 1);
-        widthModel = new SpinnerNumberModel( 3, 3, 10, 1);
-        lengthModel = new SpinnerNumberModel( 3, 3, 10, 1);
+        heightModel = new SpinnerNumberModel(3, 3, 10, 1);
+        widthModel = new SpinnerNumberModel(3, 3, 10, 1);
+        lengthModel = new SpinnerNumberModel(3, 3, 10, 1);
         JSpinner height = new JSpinner(heightModel);
         JSpinner width = new JSpinner(widthModel);
         JSpinner length = new JSpinner(lengthModel);
@@ -54,8 +53,8 @@ public class GUI  extends JFrame{
         settingsWindow.add(width);
         settingsWindow.add(lengthLbl);
         settingsWindow.add(length);
-        playerCountModel = new SpinnerNumberModel( 2, 2, 5, 1);
-        aiCountModel = new SpinnerNumberModel(0,0,5,1);
+        playerCountModel = new SpinnerNumberModel(2, 2, 5, 1);
+        aiCountModel = new SpinnerNumberModel(0, 0, 5, 1);
         JSpinner playerCount = new JSpinner(playerCountModel);
         JSpinner aiCount = new JSpinner(aiCountModel);
         settingsWindow.add(playerLbl);
@@ -67,25 +66,26 @@ public class GUI  extends JFrame{
         settingsWindow.add(submit);
     }
 
-    private class SubmitButton implements ActionListener{
+    private class SubmitButton implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent arg0){
-            board = new Connect5( (int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
+        public void actionPerformed(ActionEvent arg0) {
+            board = new Connect5((int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
             dispose();
             GameView boardGUI = new GameView();
         }
     }
 
-    private class GameView extends JFrame{
+    private class GameView extends JFrame {
         //the playin board
         SpinnerNumberModel xCountModel;
         SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
+        private BoardPanel boardPanel = new BoardPanel();
 
 
-        public GameView(){
+        public GameView() {
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setBounds(100, 100, 450, 300);
+            this.setBounds(100, 100, 1700, 900);
             this.setContentPane(gameWindow);
 
             JButton startbtn = new JButton("Start");
@@ -98,8 +98,8 @@ public class GUI  extends JFrame{
             JPanel subPanel2 = new JPanel();
             gameWindow.add(subPanel2, BorderLayout.CENTER);
 
-            xCountModel = new SpinnerNumberModel(0,0,(int) widthModel.getNumber(), 1);
-            yCountModel = new SpinnerNumberModel(0,0,(int) lengthModel.getNumber(), 1);
+            xCountModel = new SpinnerNumberModel(0, 0, (int) widthModel.getNumber(), 1);
+            yCountModel = new SpinnerNumberModel(0, 0, (int) lengthModel.getNumber(), 1);
             JSpinner xSpinner = new JSpinner(xCountModel);
             JSpinner ySpinner = new JSpinner(yCountModel);
             JLabel xlbl = new JLabel("x");
@@ -122,28 +122,31 @@ public class GUI  extends JFrame{
             JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
             gameWindow.add(background1, BorderLayout.WEST);
 
-            JPanel subPanel5 = new JPanel();
-            @Override
-            public void paint(Graphics g){
-                super.paint(g); // Call it's parent for proper rendering.
-                for (int i = 0; i<(int) heightModel.getNumber(); i++)
-                    for (int j = 0; j<(int) heightModel.getNumber(); j++){
-                        for (int k = 0; k<(int) lengthModel.getNumber(); k++) {
-                            getGraphics().setColor(Color.black);
-                            //do something for every field in the array
-                            //i.e. g.setColor(Color.getColor(wallArray[i][j], 50, 50));
-                            //g.drawLine(i,j,i,j);
-                        }
-                    }
-            }
-
-
-
-
+            boardPanel.setBackground(Color.CYAN);
+            JScrollPane boardScroll = new JScrollPane(boardPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            gameWindow.add(boardScroll, BorderLayout.CENTER);
 
 
             setVisible(true);
         }
-    }
 
+        private class BoardPanel extends JPanel{
+            public void paintComponent(Graphics g){
+                super.paintComponent(g);
+                int xVal = 0,yVal = 872;
+                g.setColor(Color.BLACK);
+                for (int i = 0; i < (int) heightModel.getNumber(); i++) {
+                    for (int j = 0; j < (int) widthModel.getNumber(); j++) {
+                        for (int k = 0; k < (int) lengthModel.getNumber(); k++) {
+                            g.drawRect(xVal, yVal, 8, 8);
+                            xVal = xVal + 8;
+                        }
+                        yVal = yVal - 8;
+                        xVal = 0;
+                    }
+                    yVal = yVal - 8;
+                }
+            }
+        }
+    }
 }
