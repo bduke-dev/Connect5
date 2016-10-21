@@ -144,7 +144,8 @@ public class GUI  extends JFrame {
 
                 if (z>5) {
                     xVal = (15*x*2)+15; //we need 2 per row b/c too tall
-                    yVal = yVal/2;
+                    if (z%2 != 0) yVal = yVal/2 + 30;
+                    else yVal = yVal/2;
                 }
                 for (int i = 0; i < z; i++) {
                     for (int j = 0; j < y; j++) {
