@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -82,6 +81,7 @@ public class GUI  extends JFrame {
         SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
         private BoardPanel boardPanel = new BoardPanel();
+        JLabel statusLbl;
 
 
         public GameView() {
@@ -113,12 +113,14 @@ public class GUI  extends JFrame {
             subPanel3.add(ySpinner);
 
             JButton commitBtn = new JButton("Commit Move");
+            commitBtn.addActionListener(new commitMove());
             Box subPanel4 = new Box(BoxLayout.PAGE_AXIS);
             subPanel4.add(subPanel3);
             subPanel4.add(commitBtn);
             gameWindow.add(subPanel4, BorderLayout.EAST);
 
-            JLabel statusLbl = new JLabel("Temp");
+            statusLbl = new JLabel("New Game");
+            statusLbl.setFont(new Font("Default", Font.BOLD, 20));
             gameWindow.add(statusLbl, BorderLayout.PAGE_END);
 
             JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
@@ -140,7 +142,6 @@ public class GUI  extends JFrame {
                 int xVal = 15*x-15;
                 int yVal = (15*y*z)+(15*(z-2));
                 int counter = 1;
-                g.setColor(Color.BLACK);
 
                 if (z>5) {
                     xVal = (15*x*2)+15; //we need 2 per row b/c too tall
@@ -150,7 +151,35 @@ public class GUI  extends JFrame {
                 for (int i = 0; i < z; i++) {
                     for (int j = 0; j < y; j++) {
                         for (int k = 0; k < x; k++) {
+                            g.setColor(Color.BLACK);
                             g.drawRect(xVal, yVal, 15, 15);
+                            switch (board.getBoard()[i][j][k]){
+                                case 1: {
+                                    g.setColor(Color.RED);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 2: {
+                                    g.setColor(Color.GREEN);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 3: {
+                                    g.setColor(Color.BLUE);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 4: {
+                                    g.setColor(Color.YELLOW);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 5: {
+                                    g.setColor(Color.ORANGE);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                            }
                             xVal = xVal - 15;
                         }
                         yVal = yVal - 15;
@@ -183,6 +212,20 @@ public class GUI  extends JFrame {
                 dispose();
                 GUI gui = new GUI();
                 gui.setVisible(true);
+            }
+        }
+
+        private class commitMove implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    board.playerz[board.getCurrentPlayer() - 1].move((int) xCountModel.getNumber(), (int) yCountModel.getNumber());
+                    statusLbl.setText("It's " + board.getCurrentPlayer() + "'s turn");
+                }
+                catch (Exception e){
+                    statusLbl.setText("Invalid Move");
+                }
+                boardPanel.paintComponent(boardPanel.getGraphics());
             }
         }
     }
