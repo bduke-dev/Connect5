@@ -1,9 +1,9 @@
 import java.util.Vector;
 
 /**
+ * Created by brandon on 10/17/16.
  * 
  * @author Lincoln Patton, Brandon Duke
- * @version 10/14/16
  */
 public class AI implements Runnable {
 

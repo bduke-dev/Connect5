@@ -6,6 +6,7 @@
 public class Connect5 {
 	public int[][][] board;
 	public Player[] playerz;
+	private int[][] winTiles;
 
 	public Connect5(int x, int y, int z, int playerCount) {
 		board = new int[z][y][x];
@@ -22,6 +23,10 @@ public class Connect5 {
 	public int[][][] getBoard() {
 		return board;
 	}
+	
+	public int[][] getWinTiles(){
+		return winTiles;
+	}
 
 	private boolean checkWin(int row, int column) {
 		Integer z = null;
@@ -34,17 +39,25 @@ public class Connect5 {
 		if (z == null)
 			return false;
 		int[] temp = { 0, 1 };
+		int[][] tempWin;
 		for (int xAxis : temp)
 			for (int yAxis : temp)
-				zFun: for (int zAxis : temp) {
+				for (int zAxis : temp) {
+					tempWin = new int[10][3];
 					if (xAxis == 0 && yAxis == 0 && zAxis == 0);
 					else {
+						tempWin[0][0] = row;
+						tempWin[0][1] = column;
+						tempWin[0][2] = z;
 						int count = 1;
 						int x = row;
 						int y = column;
 						int zCheck = z;
 						checkForward: try {
 							while (board[zCheck + zAxis][y + yAxis][x + xAxis] == board[zCheck][y][x]) {
+								tempWin[count][0] = x + xAxis;
+								tempWin[count][1] = y + yAxis;
+								tempWin[count][2] = zCheck + zAxis;
 								count++;
 								zCheck += zAxis;
 								y += yAxis;
@@ -54,13 +67,16 @@ public class Connect5 {
 							int ztemp = zCheck;
 							int ytemp = y;
 							int xtemp = x;
-							if (zCheck + 1 >= board.length)
+							if (zCheck + zAxis >= board.length)
 								zCheck = -1;
-							if (y + 1 >= board[z].length)
+							if (y + yAxis >= board[z].length)
 								y = -1;
-							if (x + 1 >= board[z][column].length)
+							if (x + xAxis >= board[z][column].length)
 								x = -1;
-							if (board[ztemp][ytemp][xtemp] == board[zCheck + 1][y + 1][x + 1]) {
+							if (board[ztemp][ytemp][xtemp] == board[zCheck + zAxis][y + yAxis][x + xAxis]) {
+								tempWin[count][0] = x + xAxis;
+								tempWin[count][1] = y + yAxis;
+								tempWin[count][2] = zCheck + zAxis;
 								count++;
 								zCheck += zAxis;
 								y += yAxis;
@@ -73,6 +89,9 @@ public class Connect5 {
 						zCheck = z;
 						checkBackward: try {
 							while (board[zCheck - zAxis][y - yAxis][x - xAxis] == board[zCheck][y][x]) {
+								tempWin[count][0] = x - xAxis;
+								tempWin[count][1] = y - yAxis;
+								tempWin[count][2] = zCheck - zAxis;
 								count++;
 								zCheck -= zAxis;
 								y -= yAxis;
@@ -82,13 +101,16 @@ public class Connect5 {
 							int ztemp = zCheck;
 							int ytemp = y;
 							int xtemp = x;
-							if (zCheck - 1 < 0)
+							if (zCheck - zAxis < 0)
 								zCheck = board.length;
-							if (y - 1 < 0)
+							if (y - yAxis < 0)
 								y = board[z].length;
-							if (x - 1 < 0)
+							if (x - xAxis < 0)
 								x = board[z][column].length;
-							if (board[ztemp][ytemp][xtemp] == board[zCheck - 1][y - 1][x - 1]) {
+							if (board[ztemp][ytemp][xtemp] == board[zCheck - zAxis][y - yAxis][x - xAxis]) {
+								tempWin[count][0] = x - xAxis;
+								tempWin[count][1] = y - yAxis;
+								tempWin[count][2] = zCheck - zAxis;
 								count++;
 								zCheck -= zAxis;
 								y -= yAxis;
@@ -96,23 +118,25 @@ public class Connect5 {
 								break checkBackward;
 							}
 						}
-						if (count >= 5)
+						if (count >= 5) {
+							winTiles = tempWin;
 							return true;
+						}
 					}
 				}
 		return false;
 	}
-	private int currentPlayer = 1;
+	private int currentPlayer = 0;
 
 	public int turnOrder() {
 		currentPlayer++;
-		if (currentPlayer > playerz.length)
-			currentPlayer = 1;
+		if (currentPlayer >= playerz.length)
+			currentPlayer = 0;
 		return currentPlayer;
 	}
 
-	public int getCurrentPlayer() {
-		return currentPlayer;
+	public Player getCurrentPlayer() {
+		return playerz[currentPlayer];
 	}
 
 	public class Player {

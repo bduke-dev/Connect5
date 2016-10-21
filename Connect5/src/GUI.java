@@ -221,7 +221,7 @@ public class GUI  extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    board.playerz[board.getCurrentPlayer() - 1].move((int) xCountModel.getNumber(), (int) yCountModel.getNumber());
+                    board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber());
                     statusLbl.setText("It's " + board.getCurrentPlayer() + "'s turn");
                 }
                 catch (Exception e){
