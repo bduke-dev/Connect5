@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by brandon on 10/14/16.
+ *
+ * @author Lincoln Patton, Brandon Duke
+ * @version 10/14/16
  */
 
 public class GUI  extends JFrame {

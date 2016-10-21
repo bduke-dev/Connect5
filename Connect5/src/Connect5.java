@@ -1,4 +1,8 @@
-
+/**
+ *
+ * @author Lincoln Patton, Brandon Duke
+ * @version 10/14/16
+ */
 public class Connect5 {
 	public int[][][] board;
 	public Player[] playerz;
