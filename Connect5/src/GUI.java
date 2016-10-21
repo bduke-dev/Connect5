@@ -125,7 +125,7 @@ public class GUI  extends JFrame {
             statusLbl.setFont(new Font("Default", Font.BOLD, 20));
             gameWindow.add(statusLbl, BorderLayout.PAGE_END);
 
-            JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
+            JLabel background1 = new JLabel(new ImageIcon("src/ing/gar.png"));
             gameWindow.add(background1, BorderLayout.WEST);
 
             boardPanel.setBackground(Color.CYAN);
