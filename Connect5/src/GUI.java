@@ -83,7 +83,7 @@ public class GUI  extends JFrame {
         SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
         private BoardPanel boardPanel = new BoardPanel();
-        JLabel statusLbl;
+        JLabel statusLbl, playerLbl;
 
 
         public GameView() {
@@ -121,9 +121,14 @@ public class GUI  extends JFrame {
             subPanel4.add(commitBtn);
             gameWindow.add(subPanel4, BorderLayout.EAST);
 
-            statusLbl = new JLabel("New Game");
+            playerLbl = new JLabel("New Game");
+            statusLbl = new JLabel("Status: No New Messages");
             statusLbl.setFont(new Font("Default", Font.BOLD, 20));
-            gameWindow.add(statusLbl, BorderLayout.PAGE_END);
+            playerLbl.setFont(new Font("Default", Font.BOLD, 20));
+            JPanel subPanel5 = new JPanel();
+            subPanel5.add(playerLbl);
+            subPanel5.add(statusLbl);
+            gameWindow.add(subPanel5, BorderLayout.PAGE_END);
 
             JLabel background1 = new JLabel(new ImageIcon("src/ing/Connect5Key.png"));
             gameWindow.add(background1, BorderLayout.WEST);
@@ -182,6 +187,18 @@ public class GUI  extends JFrame {
                                     break;
                                 }
                             }
+                            try {
+                                for (int l = 0; l < 5; l++) {
+                                    for (int m = 0; m < 1; m++) {
+                                        if (k == board.getWinTiles()[l][m] && j == board.getWinTiles()[l][m + 1]) {
+                                            g.setColor(Color.MAGENTA);
+                                            g.fillRect(xVal, yVal, 15, 15);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception e){}
+
                             xVal = xVal - 15;
                         }
                         yVal = yVal - 15;
@@ -221,11 +238,16 @@ public class GUI  extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
-                    board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber());
-                    statusLbl.setText("It's " + board.getCurrentPlayer() + "'s turn");
+                    if (!board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber())) {
+                        playerLbl.setText("It's " + board.getCurrentPlayer() + "'s turn");
+                    }
+                    else{
+                        playerLbl.setText("WINNER: " + board.getCurrentPlayer());
+                        statusLbl.setText("GAME OVER");
+                    }
                 }
                 catch (Exception e){
-                    statusLbl.setText("Invalid Move");
+                    statusLbl.setText("Status: Invalid Move");
                 }
                 boardPanel.paintComponent(boardPanel.getGraphics());
             }
