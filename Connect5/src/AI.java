@@ -179,6 +179,10 @@ public class AI implements Runnable {
 						MoveTree newMove = new MoveTree(tempPlayer, x, y, z); // Filter
 																				// possible
 																				// moves
+						if ( (board.length <= 6 && board[0].length <= 6 && board[0][0].length <= 6)
+								|| board.length < 5 || board[0].length < 5 || board[0][0].length < 5)
+							possibleMoves.add(newMove);
+						else
 						try {
 							if (z != 0 || board[0][y + 1][x] != 0 || board[0][y][x + 1] != 0
 									|| board[0][y + 1][x + 1] != 0 || board[0][y - 1][x] != 0 || board[0][y][x - 1] != 0
