@@ -134,9 +134,7 @@ public class AI implements Runnable {
 							heuristic = move.getHeuristic();
 					}
 				} else {
-<<<<<<< HEAD
 					// Heuristic code goes here
-=======
 					int row = coords[0];
 					int column = coords[1];
 					int height = coords[3];
@@ -216,7 +214,6 @@ public class AI implements Runnable {
 									heuristic = Math.pow(2, count);
 								}
 							}
->>>>>>> nick
 				}
 				heuristicValue = heuristic;
 				return heuristic;
