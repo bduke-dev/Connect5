@@ -23,8 +23,8 @@ public class Connect5 {
 	public int[][][] getBoard() {
 		return board;
 	}
-	
-	public int[][] getWinTiles(){
+
+	public int[][] getWinTiles() {
 		return winTiles;
 	}
 
@@ -44,7 +44,8 @@ public class Connect5 {
 			for (int yAxis : temp)
 				for (int zAxis : temp) {
 					tempWin = new int[10][3];
-					if (xAxis == 0 && yAxis == 0 && zAxis == 0);
+					if (xAxis == 0 && yAxis == 0 && zAxis == 0)
+						;
 					else {
 						tempWin[0][0] = row;
 						tempWin[0][1] = column;
@@ -126,6 +127,7 @@ public class Connect5 {
 				}
 		return false;
 	}
+
 	private int currentPlayer = 0;
 
 	public int turnOrder() {

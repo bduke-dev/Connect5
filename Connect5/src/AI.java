@@ -56,7 +56,7 @@ public class AI implements Runnable {
 					e1.printStackTrace();
 				}
 			}
-			for ( Thread thread: threads)
+			for (Thread thread : threads)
 				try {
 					thread.join();
 				} catch (InterruptedException e) {
@@ -109,7 +109,7 @@ public class AI implements Runnable {
 			 * Initialize a MoveTree without coordinates. Primarily used for the
 			 * root of the tree.
 			 */
-			for ( Integer x: coords) 
+			for (Integer x : coords)
 				x = null;
 			this.player = player;
 		}
@@ -145,19 +145,19 @@ public class AI implements Runnable {
 							break;
 						}
 					}
-					int[] temp = {0, 1};
+					int[] temp = { 0, 1 };
 					for (int xAxis : temp)
 						for (int yAxis : temp)
 							for (int zAxis : temp) {
 
-								if (xAxis == 0 && yAxis == 0 && zAxis == 0) ;
+								if (xAxis == 0 && yAxis == 0 && zAxis == 0)
+									;
 								else {
 									int count = 1;
 									int x = row;
 									int y = column;
 									z = height;
-									checkForward:
-									try {
+									checkForward: try {
 										while (board[z + zAxis][y + yAxis][x + xAxis] == board[z][y][x]) {
 											count++;
 											z += zAxis;
@@ -185,8 +185,7 @@ public class AI implements Runnable {
 									x = row;
 									y = column;
 									z = height;
-									checkBackward:
-									try {
+									checkBackward: try {
 										while (board[z - zAxis][y - yAxis][x - xAxis] == board[z][y][x]) {
 											count++;
 											z -= zAxis;
@@ -258,43 +257,43 @@ public class AI implements Runnable {
 						MoveTree newMove = new MoveTree(tempPlayer, x, y, z); // Filter
 																				// possible
 																				// moves
-						if ( (board.length <= 6 && board[0].length <= 6 && board[0][0].length <= 6)
-								|| board.length < 5 || board[0].length < 5 || board[0][0].length < 5)
+						if ((board.length <= 6 && board[0].length <= 6 && board[0][0].length <= 6) || board.length < 5
+								|| board[0].length < 5 || board[0][0].length < 5)
 							possibleMoves.add(newMove);
 						else
-						try {
-							if (z != 0 || board[0][y + 1][x] != 0 || board[0][y][x + 1] != 0
-									|| board[0][y + 1][x + 1] != 0 || board[0][y - 1][x] != 0 || board[0][y][x - 1] != 0
-									|| board[0][y - 1][x - 1] != 0 || board[0][x - 1][y + 1] != 0
-									|| board[0][x + 1][y - 1] != 0)
-								possibleMoves.add(newMove);
-						} catch (ArrayIndexOutOfBoundsException e) {
+							try {
+								if (z != 0 || board[0][y + 1][x] != 0 || board[0][y][x + 1] != 0
+										|| board[0][y + 1][x + 1] != 0 || board[0][y - 1][x] != 0
+										|| board[0][y][x - 1] != 0 || board[0][y - 1][x - 1] != 0
+										|| board[0][x - 1][y + 1] != 0 || board[0][x + 1][y - 1] != 0)
+									possibleMoves.add(newMove);
+							} catch (ArrayIndexOutOfBoundsException e) {
 
-						}
+							}
 					} catch (ArrayIndexOutOfBoundsException e) {
 
 					}
 				}
-			if (possibleMoves.isEmpty()){
-				if ( coords[0] == null){
-					possibleMoves.addElement(new MoveTree(tempPlayer,2,2,0));
+			if (possibleMoves.isEmpty()) {
+				if (coords[0] == null) {
+					possibleMoves.addElement(new MoveTree(tempPlayer, 2, 2, 0));
 					return true;
-				}else
-					for ( int y = 0; y < board[0].length; y++)
-						for ( int x = 0; x < board[0][y].length; x++){
-							if (board[0][y][x] != 0){
+				} else
+					for (int y = 0; y < board[0].length; y++)
+						for (int x = 0; x < board[0][y].length; x++) {
+							if (board[0][y][x] != 0) {
 								int zz = 0;
-								for( int z = 0; z < board.length; z++)
-									if ( board[z][y][x] == 0) zz = z;
-								if (zz != 0){
-									possibleMoves.add(new MoveTree(tempPlayer, x, y , zz));
+								for (int z = 0; z < board.length; z++)
+									if (board[z][y][x] == 0)
+										zz = z;
+								if (zz != 0) {
+									possibleMoves.add(new MoveTree(tempPlayer, x, y, zz));
 									return true;
 								}
 							}
 						}
 				return false;
-			}
-			else
+			} else
 				return true;
 		}
 
