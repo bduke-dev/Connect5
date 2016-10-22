@@ -61,11 +61,11 @@ public class AI implements Runnable {
 		return this.getMove();
 	}
 
-	private class MoveTree {
+	public class MoveTree {
 		/*
 		 * Well, it's a tree of possible moves.
 		 */
-		private int[] coords = new int[2];
+		private int[] coords = new int[3];
 		private int value = 0;
 		private Vector<MoveTree> possibleMoves;
 
@@ -80,13 +80,14 @@ public class AI implements Runnable {
 			 */
 		}
 		
-		public MoveTree(int x, int y){
+		public MoveTree(int x, int y, int value){
 			/*
 			 * Initialize a MoveTree with coordinates.
 			 * Use this one unless you know what you're doing!
 			 */
 			coords[0] = x;
 			coords[1] = y;
+			coords[2] = value;
 		}
 
 		public boolean populate() throws InterruptedException {
@@ -101,7 +102,7 @@ public class AI implements Runnable {
 							InterruptedException e = new InterruptedException();
 							throw e;
 						}
-						// Add code to filter results here.
+	         			// Add code to filter results here.
 						possibleMoves.add(new MoveTree(x, y));
 					} catch (ArrayIndexOutOfBoundsException e) {
 
@@ -112,7 +113,21 @@ public class AI implements Runnable {
 			else
 				return true;
 		}
-
+		/*public int heuristic() {
+			//initialize a heuristic tree, 2 dimensional; one is a move array, the other is a value
+			  while possibleMoves != null {
+			 if possibleMoves.nextnode == (piece) {
+			  (piece)count++;
+			  (piece)value = 2^count;
+			  heuristic();
+			  }
+			  if ((piece = playerPiece +1)value >= 8)   {
+			  	move to block that player;
+			  else {
+			  	make a move to highest (playerPiece)value;
+			  }
+			 */
+		}
 		public void populateAll() throws InterruptedException {
 			if (populate())
 				for (MoveTree move : possibleMoves) {
@@ -120,4 +135,5 @@ public class AI implements Runnable {
 				}
 		}
 	}
+
 }

@@ -1,11 +1,12 @@
 import javax.swing.*;
-import javax.swing.plaf.DimensionUIResource;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by brandon on 10/14/16.
+ *
+ * @author Lincoln Patton, Brandon Duke
+ * @version 10/14/16
  */
 
 public class GUI  extends JFrame {
@@ -82,6 +83,7 @@ public class GUI  extends JFrame {
         SpinnerNumberModel yCountModel;
         JPanel gameWindow = new JPanel(new BorderLayout());
         private BoardPanel boardPanel = new BoardPanel();
+        JLabel statusLbl, playerLbl;
 
 
         public GameView() {
@@ -113,15 +115,22 @@ public class GUI  extends JFrame {
             subPanel3.add(ySpinner);
 
             JButton commitBtn = new JButton("Commit Move");
+            commitBtn.addActionListener(new commitMove());
             Box subPanel4 = new Box(BoxLayout.PAGE_AXIS);
             subPanel4.add(subPanel3);
             subPanel4.add(commitBtn);
             gameWindow.add(subPanel4, BorderLayout.EAST);
 
-            JLabel statusLbl = new JLabel("Temp");
-            gameWindow.add(statusLbl, BorderLayout.PAGE_END);
+            playerLbl = new JLabel("New Game");
+            statusLbl = new JLabel("Status: No New Messages");
+            statusLbl.setFont(new Font("Default", Font.BOLD, 20));
+            playerLbl.setFont(new Font("Default", Font.BOLD, 20));
+            JPanel subPanel5 = new JPanel();
+            subPanel5.add(playerLbl);
+            subPanel5.add(statusLbl);
+            gameWindow.add(subPanel5, BorderLayout.PAGE_END);
 
-            JLabel background1 = new JLabel(new ImageIcon("/home/brandon/GitHub/connect5/Connect5/src/ing/gar.png"));
+            JLabel background1 = new JLabel(new ImageIcon("src/ing/Connect5Key.png"));
             gameWindow.add(background1, BorderLayout.WEST);
 
             boardPanel.setBackground(Color.CYAN);
@@ -140,7 +149,6 @@ public class GUI  extends JFrame {
                 int xVal = 15*x-15;
                 int yVal = (15*y*z)+(15*(z-2));
                 int counter = 1;
-                g.setColor(Color.BLACK);
 
                 if (z>5) {
                     xVal = (15*x*2)+15; //we need 2 per row b/c too tall
@@ -150,7 +158,47 @@ public class GUI  extends JFrame {
                 for (int i = 0; i < z; i++) {
                     for (int j = 0; j < y; j++) {
                         for (int k = 0; k < x; k++) {
+                            g.setColor(Color.BLACK);
                             g.drawRect(xVal, yVal, 15, 15);
+                            switch (board.getBoard()[i][j][k]){
+                                case 1: {
+                                    g.setColor(Color.RED);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 2: {
+                                    g.setColor(Color.GREEN);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 3: {
+                                    g.setColor(Color.BLUE);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 4: {
+                                    g.setColor(Color.YELLOW);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                                case 5: {
+                                    g.setColor(Color.ORANGE);
+                                    g.fillRect(xVal, yVal, 15, 15);
+                                    break;
+                                }
+                            }
+                            try {
+                                for (int l = 0; l < 5; l++) {
+                                    for (int m = 0; m < 1; m++) {
+                                        if (k == board.getWinTiles()[l][m] && j == board.getWinTiles()[l][m + 1]) {
+                                            g.setColor(Color.MAGENTA);
+                                            g.fillRect(xVal, yVal, 15, 15);
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception e){}
+
                             xVal = xVal - 15;
                         }
                         yVal = yVal - 15;
@@ -183,6 +231,25 @@ public class GUI  extends JFrame {
                 dispose();
                 GUI gui = new GUI();
                 gui.setVisible(true);
+            }
+        }
+
+        private class commitMove implements ActionListener {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                try {
+                    if (!board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber())) {
+                        playerLbl.setText("It's " + board.getCurrentPlayer() + "'s turn");
+                    }
+                    else{
+                        playerLbl.setText("WINNER: " + board.getCurrentPlayer());
+                        statusLbl.setText("GAME OVER");
+                    }
+                }
+                catch (Exception e){
+                    statusLbl.setText("Status: Invalid Move");
+                }
+                boardPanel.paintComponent(boardPanel.getGraphics());
             }
         }
     }

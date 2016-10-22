@@ -1,4 +1,8 @@
-
+/**
+ *
+ * @author Lincoln Patton, Brandon Duke
+ * @version 10/14/16
+ */
 public class Connect5 {
 	public int[][][] board;
 	public Player[] playerz;
@@ -63,11 +67,11 @@ public class Connect5 {
 							int ztemp = zCheck;
 							int ytemp = y;
 							int xtemp = x;
-							if (zCheck + 1 >= board.length)
+							if (zCheck + zAxis >= board.length)
 								zCheck = -1;
-							if (y + 1 >= board[z].length)
+							if (y + yAxis >= board[z].length)
 								y = -1;
-							if (x + 1 >= board[z][column].length)
+							if (x + xAxis >= board[z][column].length)
 								x = -1;
 							if (board[ztemp][ytemp][xtemp] == board[zCheck + zAxis][y + yAxis][x + xAxis]) {
 								tempWin[count][0] = x + xAxis;
@@ -97,11 +101,11 @@ public class Connect5 {
 							int ztemp = zCheck;
 							int ytemp = y;
 							int xtemp = x;
-							if (zCheck - 1 < 0)
+							if (zCheck - zAxis < 0)
 								zCheck = board.length;
-							if (y - 1 < 0)
+							if (y - yAxis < 0)
 								y = board[z].length;
-							if (x - 1 < 0)
+							if (x - xAxis < 0)
 								x = board[z][column].length;
 							if (board[ztemp][ytemp][xtemp] == board[zCheck - zAxis][y - yAxis][x - xAxis]) {
 								tempWin[count][0] = x - xAxis;
@@ -114,24 +118,32 @@ public class Connect5 {
 								break checkBackward;
 							}
 						}
-						if (count >= 5)
+						int value = (Math.pow(2, count);
+						int moveX = tempWin[0][0];
+						int moveY = tempWin[0][1];
+						MoveTree.MoveTree(moveX, moveY, value);
+						if (count < 5) {
+
+						}
+						else {
 							winTiles = tempWin;
 							return true;
+						}
 					}
 				}
 		return false;
 	}
-	private int currentPlayer = 1;
+	private int currentPlayer = 0;
 
 	public int turnOrder() {
 		currentPlayer++;
-		if (currentPlayer > playerz.length)
-			currentPlayer = 1;
+		if (currentPlayer >= playerz.length)
+			currentPlayer = 0;
 		return currentPlayer;
 	}
 
-	public int getCurrentPlayer() {
-		return currentPlayer;
+	public Player getCurrentPlayer() {
+		return playerz[currentPlayer];
 	}
 
 	public class Player {
