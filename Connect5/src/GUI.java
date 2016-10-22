@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 public class GUI  extends JFrame {
     //settings window
+    AI Steve = new AI(null, 0);
     Connect5 board;
     JPanel settingsWindow = new JPanel();
     SpinnerNumberModel heightModel;
@@ -74,6 +75,8 @@ public class GUI  extends JFrame {
             board = new Connect5((int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
             dispose();
             GameView boardGUI = new GameView();
+            Steve = new AI(board.getBoard() , (int) playerCountModel.getNumber());
+            Steve.start();
         }
     }
 
@@ -269,6 +272,11 @@ public class GUI  extends JFrame {
                         playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
                         statusLbl.setText("Status: Game in Progress");
                         winner = board.getCurrentPlayer().playerNumber;
+                        if ((int) board.getCurrentPlayer().playerNumber >= (int) aiCountModel.getNumber() - (int) playerCountModel.getNumber()) {
+                            Integer[] moveCoords = Steve.getMove(45);
+                            board.getCurrentPlayer().move(moveCoords[0],moveCoords[1]);
+                        }
+                        Steve.update(board.getBoard());
                     }
                     else{
                         playerLbl.setText("WINNER: Player " + winner);
