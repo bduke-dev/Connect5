@@ -41,9 +41,9 @@ public class AI implements Runnable {
 		 * Get the best move from the MoveTree.
 		 */
 		MoveTree best = null;
-		for (MoveTree move: moves.possibleMoves){
+		for (MoveTree move : moves.possibleMoves) {
 			if (best == null) best = move;
-			else if ( move.value > best.value) best = move;
+			else if (move.value > best.value) best = move;
 		}
 		return best.coords;
 	}
@@ -61,7 +61,7 @@ public class AI implements Runnable {
 		return this.getMove();
 	}
 
-	public class MoveTree {
+	private class MoveTree {
 		/*
 		 * Well, it's a tree of possible moves.
 		 */
@@ -72,15 +72,15 @@ public class AI implements Runnable {
 		public MoveTree getMove(int move) {
 			return possibleMoves.elementAt(move);
 		}
-		
-		public MoveTree(){
+
+		public MoveTree() {
 			/*
 			 * Initialize a MoveTree without coordinates.
 			 * Primarily used for the root of the tree.
 			 */
 		}
-		
-		public MoveTree(int x, int y, int value){
+
+		public MoveTree(int x, int y, int value) {
 			/*
 			 * Initialize a MoveTree with coordinates.
 			 * Use this one unless you know what you're doing!
@@ -102,8 +102,7 @@ public class AI implements Runnable {
 							InterruptedException e = new InterruptedException();
 							throw e;
 						}
-	         			// Add code to filter results here.
-						possibleMoves.add(new MoveTree(x, y));
+						// Add code to filter results here.
 					} catch (ArrayIndexOutOfBoundsException e) {
 
 					}
@@ -127,13 +126,13 @@ public class AI implements Runnable {
 			  	make a move to highest (playerPiece)value;
 			  }
 			 */
-		}
+
 		public void populateAll() throws InterruptedException {
 			if (populate())
 				for (MoveTree move : possibleMoves) {
 					move.populateAll();
+					//move.prune();
 				}
 		}
 	}
-
 }

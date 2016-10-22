@@ -118,14 +118,7 @@ public class Connect5 {
 								break checkBackward;
 							}
 						}
-						int value = (Math.pow(2, count);
-						int moveX = tempWin[0][0];
-						int moveY = tempWin[0][1];
-						MoveTree.MoveTree(moveX, moveY, value);
-						if (count < 5) {
-
-						}
-						else {
+						if (count >= 5) {
 							winTiles = tempWin;
 							return true;
 						}
