@@ -156,14 +156,16 @@ public class GUI  extends JFrame {
                 int y = (int) widthModel.getNumber();
                 int x = (int) lengthModel.getNumber();
                 int counter = 1;
-                int scaleFactor;
+                int scaleFactor = 0;
+                int n = x + y + z;
 
-                if (z == 10 && y == 10 && x == 10) scaleFactor = 15;
-                else scaleFactor = 30;
+                if (n<=30) scaleFactor = 15;
+                if (n<=20) scaleFactor = 20;
+                if (n<=10) scaleFactor = 30;
 
 
                 int xVal = scaleFactor*x-scaleFactor;
-                int yVal = (scaleFactor*y*z)+(scaleFactor*(z-2));
+                int yVal = (scaleFactor*y*z)+(scaleFactor*(z-1));
 
                 if (z>5) {
                     xVal = (scaleFactor*x*2)+scaleFactor; //we need 2 per row b/c too tall
@@ -221,6 +223,7 @@ public class GUI  extends JFrame {
                             else xVal = (xVal + (scaleFactor*x));
                         }
                     }
+                    if (z>5) g.drawString("Floor: " + i,xVal-scaleFactor,yVal+scaleFactor);
                     if (z<=5) yVal = yVal - scaleFactor;
                     else {
                         if (counter != 2) {
@@ -234,6 +237,7 @@ public class GUI  extends JFrame {
                     }
                     counter++;
                     if (counter > 2) counter = 1;
+                    if (z<=5) g.drawString("Floor: " + i,xVal-scaleFactor,yVal+(2*scaleFactor));
                 }
             }
         }
