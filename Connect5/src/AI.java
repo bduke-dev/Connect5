@@ -134,7 +134,89 @@ public class AI implements Runnable {
 							heuristic = move.getHeuristic();
 					}
 				} else {
+<<<<<<< HEAD
 					// Heuristic code goes here
+=======
+					int row = coords[0];
+					int column = coords[1];
+					int height = coords[3];
+					Integer z = null;
+					for (int i = board.length - 1; i >= 0; i--) {
+						if (board[i][column][row] != 0) {
+							z = i;
+							break;
+						}
+					}
+					int[] temp = {0, 1};
+					for (int xAxis : temp)
+						for (int yAxis : temp)
+							for (int zAxis : temp) {
+
+								if (xAxis == 0 && yAxis == 0 && zAxis == 0) ;
+								else {
+									int count = 1;
+									int x = row;
+									int y = column;
+									z = height;
+									checkForward:
+									try {
+										while (board[z + zAxis][y + yAxis][x + xAxis] == board[z][y][x]) {
+											count++;
+											z += zAxis;
+											y += yAxis;
+											x += xAxis;
+										}
+									} catch (ArrayIndexOutOfBoundsException e) {
+										int ztemp = z;
+										int ytemp = y;
+										int xtemp = x;
+										if (z + zAxis >= board.length)
+											z = -1;
+										if (y + yAxis >= board[z].length)
+											y = -1;
+										if (x + xAxis >= board[z][column].length)
+											x = -1;
+										if (board[ztemp][ytemp][xtemp] == board[z + zAxis][y + yAxis][x + xAxis]) {
+											count++;
+											z += zAxis;
+											y += yAxis;
+											x += xAxis;
+											break checkForward;
+										}
+									}
+									x = row;
+									y = column;
+									z = height;
+									checkBackward:
+									try {
+										while (board[z - zAxis][y - yAxis][x - xAxis] == board[z][y][x]) {
+											count++;
+											z -= zAxis;
+											y -= yAxis;
+											x -= xAxis;
+										}
+									} catch (ArrayIndexOutOfBoundsException e) {
+										int ztemp = z;
+										int ytemp = y;
+										int xtemp = x;
+										if (z - zAxis < 0)
+											z = board.length;
+										if (y - yAxis < 0)
+											y = board[z].length;
+										if (x - xAxis < 0)
+											x = board[z][column].length;
+										if (board[ztemp][ytemp][xtemp] == board[z - zAxis][y - yAxis][x - xAxis]) {
+											count++;
+											z -= zAxis;
+											y -= yAxis;
+											x -= xAxis;
+											break checkBackward;
+										}
+									}
+									heuristic = Math.pow(2, count);
+								}
+							}
+>>>>>>> nick
 				}
 				heuristicValue = heuristic;
 				return heuristic;
