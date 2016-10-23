@@ -79,8 +79,13 @@ public class AI implements Runnable {
 		/*
 		 * Get the best move from the MoveTree.
 		 */
+		aiThread.interrupt();
 		MoveTree best = null;
 		for (MoveTree move : moves.possibleMoves) {
+			if ( move.getHeuristic() > 16/board.length){
+				best = move;
+				break;
+			}
 			if (best == null)
 				best = move;
 			else if (move.getHeuristic() > best.getHeuristic())
