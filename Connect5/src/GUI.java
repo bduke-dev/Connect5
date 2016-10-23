@@ -272,9 +272,6 @@ public class GUI  extends JFrame {
                 commitBtn.setEnabled(true);
                 try {
                     if (!board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber())) {
-                        playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
-                        statusLbl.setText("Status: Game in Progress");
-                        winner = board.getCurrentPlayer().playerNumber;
                         if ((int) board.getCurrentPlayer().playerNumber > (int) playerCountModel.getNumber() - (int) aiCountModel.getNumber()) {
                             commitBtn.setEnabled(false);
                             Integer[] moveCoords = Steve.getMove(45);
@@ -286,7 +283,9 @@ public class GUI  extends JFrame {
                                 commitBtn.setEnabled(false);
                             }
                             commitBtn.setEnabled(true);
-
+                            playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
+                            statusLbl.setText("Status: Game in Progress");
+                            winner = board.getCurrentPlayer().playerNumber;
                         }
                         Steve.update(board.getBoard());
                     }
