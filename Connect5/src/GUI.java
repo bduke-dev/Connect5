@@ -272,7 +272,7 @@ public class GUI  extends JFrame {
                 commitBtn.setEnabled(true);
                 try {
                     if (!board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber())) {
-                        if ((int) board.getCurrentPlayer().playerNumber > (int) playerCountModel.getNumber() - (int) aiCountModel.getNumber()) {
+                        while ((int) board.getCurrentPlayer().playerNumber > (int) playerCountModel.getNumber() - (int) aiCountModel.getNumber()) {
                             commitBtn.setEnabled(false);
                             Integer[] moveCoords = Steve.getMove(45);
                             if (board.getCurrentPlayer().move(moveCoords[0],moveCoords[1])){
