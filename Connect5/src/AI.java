@@ -50,13 +50,13 @@ public class AI implements Runnable {
 					thread.interrupt();
 				}
 				try {
-					wait(100);
+					aiThread.wait(100);
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
-			for (Thread thread : threads)
+			for ( Thread thread: threads)
 				try {
 					thread.join();
 				} catch (InterruptedException e) {
@@ -83,14 +83,13 @@ public class AI implements Runnable {
 		 * Wait for awhile before getting the move.
 		 */
 		try {
-			wait(time * 1000);
+				wait(time * 1000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return this.getMove();
 	}
-
 	private class MoveTree {
 		/*
 		 * Well, it's a tree of possible moves.
@@ -109,7 +108,7 @@ public class AI implements Runnable {
 			 * Initialize a MoveTree without coordinates. Primarily used for the
 			 * root of the tree.
 			 */
-			for (Integer x : coords)
+			for ( Integer x: coords) 
 				x = null;
 			this.player = player;
 		}
@@ -134,10 +133,9 @@ public class AI implements Runnable {
 							heuristic = move.getHeuristic();
 					}
 				} else {
-					// Heuristic code goes here
 					int row = coords[0];
 					int column = coords[1];
-					int height = coords[3];
+					int height = coords[2];
 					Integer z = null;
 					for (int i = board.length - 1; i >= 0; i--) {
 						if (board[i][column][row] != 0) {
@@ -145,19 +143,19 @@ public class AI implements Runnable {
 							break;
 						}
 					}
-					int[] temp = { 0, 1 };
+					int[] temp = {0, 1};
 					for (int xAxis : temp)
 						for (int yAxis : temp)
 							for (int zAxis : temp) {
 
-								if (xAxis == 0 && yAxis == 0 && zAxis == 0)
-									;
+								if (xAxis == 0 && yAxis == 0 && zAxis == 0) ;
 								else {
 									int count = 1;
 									int x = row;
 									int y = column;
 									z = height;
-									checkForward: try {
+									checkForward:
+									try {
 										while (board[z + zAxis][y + yAxis][x + xAxis] == board[z][y][x]) {
 											count++;
 											z += zAxis;
@@ -170,9 +168,9 @@ public class AI implements Runnable {
 										int xtemp = x;
 										if (z + zAxis >= board.length)
 											z = -1;
-										if (y + yAxis >= board[z].length)
+										if (y + yAxis >= board[0].length)
 											y = -1;
-										if (x + xAxis >= board[z][column].length)
+										if (x + xAxis >= board[0][0].length)
 											x = -1;
 										if (board[ztemp][ytemp][xtemp] == board[z + zAxis][y + yAxis][x + xAxis]) {
 											count++;
@@ -185,7 +183,8 @@ public class AI implements Runnable {
 									x = row;
 									y = column;
 									z = height;
-									checkBackward: try {
+									checkBackward:
+									try {
 										while (board[z - zAxis][y - yAxis][x - xAxis] == board[z][y][x]) {
 											count++;
 											z -= zAxis;
@@ -199,9 +198,9 @@ public class AI implements Runnable {
 										if (z - zAxis < 0)
 											z = board.length;
 										if (y - yAxis < 0)
-											y = board[z].length;
+											y = board[0].length;
 										if (x - xAxis < 0)
-											x = board[z][column].length;
+											x = board[0][0].length;
 										if (board[ztemp][ytemp][xtemp] == board[z - zAxis][y - yAxis][x - xAxis]) {
 											count++;
 											z -= zAxis;
@@ -257,45 +256,45 @@ public class AI implements Runnable {
 						MoveTree newMove = new MoveTree(tempPlayer, x, y, z); // Filter
 																				// possible
 																				// moves
-						if ((board.length <= 6 && board[0].length <= 6 && board[0][0].length <= 6) || board.length < 5
-								|| board[0].length < 5 || board[0][0].length < 5)
+						if ( (board.length <= 6 && board[0].length <= 6 && board[0][0].length <= 6)
+								|| board.length < 5 || board[0].length < 5 || board[0][0].length < 5)
 							possibleMoves.add(newMove);
 						else
-							try {
-								if (z != 0 || board[0][y + 1][x] != 0 || board[0][y][x + 1] != 0
-										|| board[0][y + 1][x + 1] != 0 || board[0][y - 1][x] != 0
-										|| board[0][y][x - 1] != 0 || board[0][y - 1][x - 1] != 0
-										|| board[0][x - 1][y + 1] != 0 || board[0][x + 1][y - 1] != 0)
-									possibleMoves.add(newMove);
-							} catch (ArrayIndexOutOfBoundsException e) {
+						try {
+							if (z != 0 || board[0][y + 1][x] != 0 || board[0][y][x + 1] != 0
+									|| board[0][y + 1][x + 1] != 0 || board[0][y - 1][x] != 0 || board[0][y][x - 1] != 0
+									|| board[0][y - 1][x - 1] != 0 || board[0][x - 1][y + 1] != 0
+									|| board[0][x + 1][y - 1] != 0)
+								possibleMoves.add(newMove);
+						} catch (ArrayIndexOutOfBoundsException e) {
 
-							}
+						}
 					} catch (ArrayIndexOutOfBoundsException e) {
 
 					}
 				}
-			if (possibleMoves.isEmpty()) {
-				if (coords[0] == null) {
-					possibleMoves.addElement(new MoveTree(tempPlayer, 2, 2, 0));
+			if (possibleMoves.isEmpty()){
+				if ( coords[0] == null){
+					possibleMoves.addElement(new MoveTree(tempPlayer,2,2,0));
 					return true;
-				} else
-					for (int y = 0; y < board[0].length; y++)
-						for (int x = 0; x < board[0][y].length; x++) {
-							if (board[0][y][x] != 0) {
+				}else
+					for ( int y = 0; y < board[0].length; y++)
+						for ( int x = 0; x < board[0][y].length; x++){
+							if (board[0][y][x] != 0){
 								int zz = 0;
-								for (int z = 0; z < board.length; z++)
-									if (board[z][y][x] == 0)
-										zz = z;
-								if (zz != 0) {
-									possibleMoves.add(new MoveTree(tempPlayer, x, y, zz));
+								for( int z = 0; z < board.length; z++)
+									if ( board[z][y][x] == 0) zz = z;
+								if (zz != 0){
+									possibleMoves.add(new MoveTree(tempPlayer, x, y , zz));
 									return true;
 								}
 							}
 						}
 				return false;
-			} else
+			}
+			else
 				return true;
-		}
+		} 
 
 		public void populateAll() throws InterruptedException {
 			if (populate())
