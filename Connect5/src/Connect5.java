@@ -7,6 +7,7 @@ public class Connect5 {
 	public int[][][] board;
 	public Player[] playerz;
 	private int[][] winTiles;
+	private boolean winOrNot;
 
 	public Connect5(int x, int y, int z, int playerCount) {
 		board = new int[z][y][x];
@@ -120,12 +121,18 @@ public class Connect5 {
 						}
 						if (count >= 5) {
 							winTiles = tempWin;
+							winOrNot = true;
 							return true;
 						}
 					}
 				}
+		winOrNot = false;
 		return false;
 	}
+
+	public boolean isWinOrNot(){
+        return winOrNot;
+    }
 	private int currentPlayer = 0;
 
 	public int turnOrder() {
