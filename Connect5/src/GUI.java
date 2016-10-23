@@ -282,6 +282,7 @@ public class GUI  extends JFrame {
                                 ySpinner.setEnabled(false);
                                 commitBtn.setEnabled(false);
                             }
+                            boardPanel.paintComponent(boardPanel.getGraphics());
                             commitBtn.setEnabled(true);
                             playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
                             statusLbl.setText("Status: Game in Progress");
