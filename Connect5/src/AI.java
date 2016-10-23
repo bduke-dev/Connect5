@@ -23,7 +23,16 @@ public class AI implements Runnable {
 
 	public void update(int[][][] board) {
 		aiThread.interrupt(); // Stop the AI...
-		this.board = board; // and update the board.
+		int[][][] tempBoard = this.board;
+		this.board = board;
+		while( tempBoard != board){
+			for ( MoveTree move : moves.possibleMoves){
+				if (board[move.coords[2]][move.coords[1]][move.coords[0]] == move.player){
+					moves = move;
+					break;
+				}
+			}
+		}
 	}
 
 	public void run() {
