@@ -1,0 +1,5 @@
+1. Move coords in gui are random? Pls Advise
+2. Check win before next player makes move; break, if happens (maybe fixed?)
+3. Fix AI heuristic to work on smaller boards
+4. Disable start button after initial press (code is there, search "MASON" and "ADVISE", but startbtn is the wrong label - i don't know which is correct.)
+5. Fix win checking if it's still broken - doesn't display text properly

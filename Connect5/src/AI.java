@@ -50,7 +50,9 @@ public class AI implements Runnable {
 					thread.interrupt();
 				}
 				try {
-					aiThread.wait(100);
+					synchronized(aiThread){
+						aiThread.wait(100);
+					}
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -83,13 +85,16 @@ public class AI implements Runnable {
 		 * Wait for awhile before getting the move.
 		 */
 		try {
-				wait(time * 1000);
+			synchronized(aiThread) {
+				aiThread.wait(time * 1000);
+			}
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return this.getMove();
 	}
+
 	private class MoveTree {
 		/*
 		 * Well, it's a tree of possible moves.
@@ -294,7 +299,7 @@ public class AI implements Runnable {
 			}
 			else
 				return true;
-		} 
+		}
 
 		public void populateAll() throws InterruptedException {
 			if (populate())

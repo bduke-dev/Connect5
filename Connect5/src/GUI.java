@@ -275,10 +275,18 @@ public class GUI  extends JFrame {
                         playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
                         statusLbl.setText("Status: Game in Progress");
                         winner = board.getCurrentPlayer().playerNumber;
-                        if ((int) board.getCurrentPlayer().playerNumber > (int) aiCountModel.getNumber() - (int) playerCountModel.getNumber()) {
+                        if ((int) board.getCurrentPlayer().playerNumber > (int) playerCountModel.getNumber() - (int) aiCountModel.getNumber()) {
                             commitBtn.setEnabled(false);
                             Integer[] moveCoords = Steve.getMove(45);
-                            board.getCurrentPlayer().move(moveCoords[0],moveCoords[1]);
+                            if (board.getCurrentPlayer().move(moveCoords[0],moveCoords[1])){
+                                playerLbl.setText("WINNER: Player " + winner);
+                                statusLbl.setText("Status: GAME OVER");
+                                xSpinner.setEnabled(false);
+                                ySpinner.setEnabled(false);
+                                commitBtn.setEnabled(false);
+                            }
+                            commitBtn.setEnabled(true);
+
                         }
                         Steve.update(board.getBoard());
                     }
@@ -294,6 +302,7 @@ public class GUI  extends JFrame {
                     statusLbl.setText("Status: Invalid Move");
                 }
                 boardPanel.paintComponent(boardPanel.getGraphics());
+                commitBtn.setEnabled(true);
             }
         }
     }
