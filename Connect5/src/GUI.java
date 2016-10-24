@@ -251,7 +251,6 @@ public class GUI  extends JFrame {
                 dispose();
                 GUI gui = new GUI();
                 gui.setVisible(true);
-                // I have no idea what this label is pls advise startbtn.setEnabled(true);
             }
         }
 
@@ -261,7 +260,6 @@ public class GUI  extends JFrame {
                 xSpinner.setEnabled(true);
                 ySpinner.setEnabled(true);
                 commitBtn.setEnabled(true);
-               // WHAT DOES THE LABEL MEAN, MASON?
                 startBtn.setEnabled(false);
             }
         }
