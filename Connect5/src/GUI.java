@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 public class GUI  extends JFrame {
     //settings window
+    AI Steve = new AI(null, 0);
     Connect5 board;
     JPanel settingsWindow = new JPanel();
     SpinnerNumberModel heightModel;
@@ -74,6 +75,8 @@ public class GUI  extends JFrame {
             board = new Connect5((int) lengthModel.getNumber(), (int) widthModel.getNumber(), (int) heightModel.getNumber(), (int) playerCountModel.getNumber());
             dispose();
             GameView boardGUI = new GameView();
+            Steve = new AI(board.getBoard() , (int) playerCountModel.getNumber());
+            Steve.start();
         }
     }
 
@@ -85,7 +88,7 @@ public class GUI  extends JFrame {
         private BoardPanel boardPanel = new BoardPanel();
         JLabel statusLbl, playerLbl;
         JSpinner xSpinner, ySpinner;
-        JButton commitBtn;
+        JButton commitBtn, startBtn;
 
 
         public GameView() {
@@ -93,12 +96,12 @@ public class GUI  extends JFrame {
             this.setBounds(100, 100, 1700, 950);
             this.setContentPane(gameWindow);
 
-            JButton startbtn = new JButton("Start");
+            startBtn = new JButton("Start");
             JButton resetBtn = new JButton("Reset");
             resetBtn.addActionListener(new ResetButton());
-            startbtn.addActionListener(new StartButton());
+            startBtn.addActionListener(new StartButton());
             JPanel subPanel1 = new JPanel();
-            subPanel1.add(startbtn);
+            subPanel1.add(startBtn);
             subPanel1.add(resetBtn);
             gameWindow.add(subPanel1, BorderLayout.PAGE_START);
 
@@ -257,6 +260,7 @@ public class GUI  extends JFrame {
                 xSpinner.setEnabled(true);
                 ySpinner.setEnabled(true);
                 commitBtn.setEnabled(true);
+                startBtn.setEnabled(false);
             }
         }
 
@@ -264,11 +268,35 @@ public class GUI  extends JFrame {
             int winner;
             @Override
             public void actionPerformed(ActionEvent arg0) {
+                commitBtn.setEnabled(true);
                 try {
                     if (!board.getCurrentPlayer().move((int) xCountModel.getNumber(), (int) yCountModel.getNumber())) {
+                    	boardPanel.paintComponent(boardPanel.getGraphics());
                         playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
-                        statusLbl.setText("Status: Game in Progress");
                         winner = board.getCurrentPlayer().playerNumber;
+                        while (((int) board.getCurrentPlayer().playerNumber > (int) playerCountModel.getNumber() - (int) aiCountModel.getNumber()) && !board.isWinOrNot()) {
+                            commitBtn.setEnabled(false);
+                            winner = board.getCurrentPlayer().playerNumber;
+                            Integer[] moveCoords = Steve.getMove(45);
+                            if (board.getCurrentPlayer().move(moveCoords[0],moveCoords[1])){
+                                playerLbl.setText("WINNER: Player " + winner);
+                                statusLbl.setText("Status: GAME OVER");
+                                xSpinner.setEnabled(false);
+                                ySpinner.setEnabled(false);
+                                commitBtn.setEnabled(false);
+                                startBtn.setEnabled(false);
+                                break;
+                            }
+                            boardPanel.paintComponent(boardPanel.getGraphics());
+                            commitBtn.setEnabled(true);
+                            Steve.update(board.getBoard());
+                            playerLbl.setText("It's " + board.getCurrentPlayer().playerNumber + "'s turn");
+                            statusLbl.setText("Status: Game in Progress");
+                            if (board.isWinOrNot()) commitBtn.setEnabled(false);
+                            else commitBtn.setEnabled(true);
+                            winner = board.getCurrentPlayer().playerNumber;
+                        }
+                        Steve.update(board.getBoard());
                     }
                     else{
                         playerLbl.setText("WINNER: Player " + winner);
@@ -276,9 +304,10 @@ public class GUI  extends JFrame {
                         xSpinner.setEnabled(false);
                         ySpinner.setEnabled(false);
                         commitBtn.setEnabled(false);
+                        startBtn.setEnabled(false);
                     }
                 }
-                catch (Exception e){
+                catch (InvalidMoveException e){
                     statusLbl.setText("Status: Invalid Move");
                 }
                 boardPanel.paintComponent(boardPanel.getGraphics());
